@@ -2,152 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Radarloops - America3</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIF Gallery</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            background: #f0f2f5;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
         }
-        header {
-            background: #323c47; 
-            color: #fff; 
-            padding: 1rem; 
+        h1 {
             text-align: center;
         }
-        #search-container {
-            margin: 2rem auto 1rem auto;
-            text-align: center;
-        }
-        #search-input {
-            width: 350px;
-            max-width: 80vw;
-            padding: 0.5rem;
-            font-size: 1rem;
-        }
-        #gifs-container {
+        .gallery {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.5rem;
             justify-content: center;
-            margin: 2rem auto;
-            max-width: 1200px;
         }
-        .gif-card {
-            background: #fff;
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            padding: 1rem;
-            width: 240px;
-            text-align: center;
-            transition: box-shadow 0.2s;
+        .gif-container {
+            margin: 10px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .gif-card:hover {
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        }
-        .gif-title {
-            margin: 0.5rem 0 1rem 0;
-            font-weight: bold;
-            font-size: 1.1rem;
-            word-break: break-word;
-        }
-        .gif-preview {
-            max-width: 220px;
-            max-height: 180px;
-            margin-bottom: 0.5rem;
-        }
-        .gif-link {
-            display: inline-block;
-            margin-top: 0.5rem;
-            color: #1877f2;
-            text-decoration: none;
-        }
-        @media (max-width: 600px) {
-            #gifs-container {
-                gap: 0.5rem;
-            }
-            .gif-card {
-                width: 90vw;
-            }
+        img {
+            max-width: 300px;
+            max-height: 300px;
+            display: block;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Radarloops</h1>
-        <p>America3's Archive of Radar GIFs</p>
-        <p style="font-size: 0.95rem;">
-            View source or contribute on 
-            <a href="https://github.com/america3/radarloops" target="_blank" style="color: #fff; text-decoration: underline;">GitHub</a>
-        </p>
-    </header>
-    <div id="search-container">
-        <input type="text" id="search-input" placeholder="Search radar GIFs...">
+
+    <h1>GIF Gallery</h1>
+    <div class="gallery">
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/l0IylN1R9B56FJ4Ee/giphy.gif" alt="GIF 1">
+        </div>
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/3o7TKF1n4wXkF2kR4w/giphy.gif" alt="GIF 2">
+        </div>
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/3oFzmeS6YqOob9Xo6U/giphy.gif" alt="GIF 3">
+        </div>
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/26BGDs0RdU4vw03He/giphy.gif" alt="GIF 4">
+        </div>
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/xT1XGtnjl2zOZ3j0xW/giphy.gif" alt="GIF 5">
+        </div>
     </div>
-    <div id="gifs-container">
-        <!-- GIFs will be dynamically inserted here -->
-    </div>
 
-    <script>
-        // List your GIFs here. If you put GIFs in a "gifs" or "files" folder, update the url accordingly.
-        const gifs = [
-            {
-                title: "Storm Radar 2024-06-15",
-                filename: "storm_20240615.gif",
-                url: "files/storm_20240615.gif"
-            },
-            {
-                title: "PTC8 Weather Radar Loop",
-                filename: "PTC8_weather_radar_loop.gif",
-                url: "Radarloops/PTC8_weather_radar_loop.giff"
-            },
-            {
-                title: "US Composite 2024-06-10",
-                filename: "us_composite_20240610.gif",
-                url: "files/us_composite_20240610.gif"
-            }
-            // Add more GIFs here as needed
-        ];
-
-        function getGifCard(gif) {
-            return `
-                <div class="gif-card" data-title="${gif.title.toLowerCase()}" data-filename="${gif.filename.toLowerCase()}">
-                    <img src="${gif.url}" alt="${gif.title}" class="gif-preview">
-                    <div class="gif-title">${gif.title}</div>
-                    <a class="gif-link" href="${gif.url}" target="_blank" download>Download</a>
-                </div>
-            `;
-        }
-
-        function renderGifs(filter="") {
-            const container = document.getElementById('gifs-container');
-            container.innerHTML = '';
-            let filtered = gifs;
-            if (filter) {
-                const term = filter.toLowerCase();
-                filtered = gifs.filter(g =>
-                    g.title.toLowerCase().includes(term) ||
-                    g.filename.toLowerCase().includes(term)
-                );
-            }
-            if (filtered.length === 0) {
-                container.innerHTML = `<div style="padding:2rem;color:#888;">No GIFs found.</div>`;
-                return;
-            }
-            filtered.forEach(gif => {
-                container.innerHTML += getGifCard(gif);
-            });
-        }
-
-        // Event listeners
-        document.getElementById('search-input').addEventListener('input', function() {
-            renderGifs(this.value);
-        });
-
-        // Initial render
-        renderGifs();
-    </script>
 </body>
 </html>
