@@ -27,7 +27,7 @@
             padding: 0.5rem;
             font-size: 1rem;
         }
-        #files-container {
+        #gifs-container {
             display: flex;
             flex-wrap: wrap;
             gap: 1.5rem;
@@ -35,7 +35,7 @@
             margin: 2rem auto;
             max-width: 1200px;
         }
-        .file-card {
+        .gif-card {
             background: #fff;
             border-radius: 6px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
@@ -44,31 +44,31 @@
             text-align: center;
             transition: box-shadow 0.2s;
         }
-        .file-card:hover {
+        .gif-card:hover {
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
-        .file-title {
+        .gif-title {
             margin: 0.5rem 0 1rem 0;
             font-weight: bold;
             font-size: 1.1rem;
             word-break: break-word;
         }
-        .file-preview {
+        .gif-preview {
             max-width: 220px;
             max-height: 180px;
             margin-bottom: 0.5rem;
         }
-        .file-link {
+        .gif-link {
             display: inline-block;
             margin-top: 0.5rem;
             color: #1877f2;
             text-decoration: none;
         }
         @media (max-width: 600px) {
-            #files-container {
+            #gifs-container {
                 gap: 0.5rem;
             }
-            .file-card {
+            .gif-card {
                 width: 90vw;
             }
         }
@@ -77,94 +77,74 @@
 <body>
     <header>
         <h1>Radarloops</h1>
-        <p>America3's Archive of Radar Loops, GIFs and Files</p>
+        <p>America3's Archive of Radar GIFs</p>
+        <p style="font-size: 0.95rem;">
+            View source or contribute on 
+            <a href="https://github.com/america3/radarloops" target="_blank" style="color: #fff; text-decoration: underline;">GitHub</a>
+        </p>
     </header>
     <div id="search-container">
-        <input type="text" id="search-input" placeholder="Search files, gifs, or keywords...">
+        <input type="text" id="search-input" placeholder="Search radar GIFs...">
     </div>
-    <div id="files-container">
-        <!-- Files will be dynamically inserted here -->
+    <div id="gifs-container">
+        <!-- GIFs will be dynamically inserted here -->
     </div>
 
     <script>
-        // Example data, replace with actual file list or fetch from backend/JSON API if needed
-        const files = [
+        // List your GIFs here, or generate this with a script if you update often.
+        // If you put GIFs in a "gifs" or "files" folder, update the url accordingly.
+        // Example files (replace with actual GIFs from your repo):
+        const gifs = [
             {
                 title: "Storm Radar 2024-06-15",
                 filename: "storm_20240615.gif",
-                type: "gif",
                 url: "files/storm_20240615.gif"
             },
             {
                 title: "US Composite 2024-06-10",
-                filename: "us_composite_20240610.gif",
-                type: "gif",
-                url: "files/us_composite_20240610.gif"
-            },
-            {
-                title: "Loop Data 2024-06-01",
-                filename: "loop_data_20240601.zip",
-                type: "zip",
-                url: "files/loop_data_20240601.zip"
-            },
-            {
-                title: "Readme",
-                filename: "README.txt",
-                type: "txt",
-                url: "files/README.txt"
+                filename: "PTC8_weather_radar_loop.gif",
+                url: "PTC8_weather_radar_loop.gif"
             }
-            // Add more files here...
+            // Add more GIFs here as needed
         ];
 
-        function getFileCard(file) {
-            let preview = '';
-            if (file.type === "gif") {
-                preview = `<img src="${file.url}" alt="${file.title}" class="file-preview">`;
-            } else if (file.type === "png" || file.type === "jpg" || file.type === "jpeg") {
-                preview = `<img src="${file.url}" alt="${file.title}" class="file-preview">`;
-            } else if (file.type === "txt") {
-                preview = `<span class="file-preview" style="font-size:2.5rem;">📄</span>`;
-            } else if (file.type === "zip") {
-                preview = `<span class="file-preview" style="font-size:2.5rem;">🗜️</span>`;
-            } else {
-                preview = `<span class="file-preview" style="font-size:2.5rem;">📁</span>`;
-            }
+        function getGifCard(gif) {
             return `
-                <div class="file-card" data-title="${file.title.toLowerCase()}" data-filename="${file.filename.toLowerCase()}">
-                    ${preview}
-                    <div class="file-title">${file.title}</div>
-                    <a class="file-link" href="${file.url}" target="_blank" download>Download</a>
+                <div class="gif-card" data-title="${gif.title.toLowerCase()}" data-filename="${gif.filename.toLowerCase()}">
+                    <img src="${gif.url}" alt="${gif.title}" class="gif-preview">
+                    <div class="gif-title">${gif.title}</div>
+                    <a class="gif-link" href="${gif.url}" target="_blank" download>Download</a>
                 </div>
             `;
         }
 
-        function renderFiles(filter="") {
-            const container = document.getElementById('files-container');
+        function renderGifs(filter="") {
+            const container = document.getElementById('gifs-container');
             container.innerHTML = '';
-            let filtered = files;
+            let filtered = gifs;
             if (filter) {
                 const term = filter.toLowerCase();
-                filtered = files.filter(f =>
-                    f.title.toLowerCase().includes(term) ||
-                    f.filename.toLowerCase().includes(term)
+                filtered = gifs.filter(g =>
+                    g.title.toLowerCase().includes(term) ||
+                    g.filename.toLowerCase().includes(term)
                 );
             }
             if (filtered.length === 0) {
-                container.innerHTML = `<div style="padding:2rem;color:#888;">No files found.</div>`;
+                container.innerHTML = `<div style="padding:2rem;color:#888;">No GIFs found.</div>`;
                 return;
             }
-            filtered.forEach(file => {
-                container.innerHTML += getFileCard(file);
+            filtered.forEach(gif => {
+                container.innerHTML += getGifCard(gif);
             });
         }
 
         // Event listeners
         document.getElementById('search-input').addEventListener('input', function() {
-            renderFiles(this.value);
+            renderGifs(this.value);
         });
 
         // Initial render
-        renderFiles();
+        renderGifs();
     </script>
 </body>
 </html>
